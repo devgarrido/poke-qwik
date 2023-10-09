@@ -1,0 +1,31 @@
+.modal-background {
+  @apply fixed inset-0 flex items-center justify-center w-full h-full overflow-y-auto transition-all bg-black bg-opacity-50;
+}
+
+.modal-content {
+  @apply bg-white border rounded-md shadow-lg;
+}
+
+.modal-content-text {
+  @apply flex items-center justify-center text-sm text-center text-gray-500;
+}
+
+.modal-sm {
+  @apply w-56;
+}
+
+.modal-md {
+  @apply w-96;
+}
+
+.modal-lg {
+  @apply w-5/12;
+}
+
+.modal-title {
+  @apply text-lg font-medium leading-6 text-gray-900 capitalize;
+}
+
+.modal-button {
+  @apply w-full px-4 py-2 text-base font-medium text-white bg-purple-600 rounded-md shadow-sm hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-purple-300;
+}
