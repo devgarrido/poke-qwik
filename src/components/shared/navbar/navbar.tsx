@@ -5,7 +5,7 @@ import { QwikLogo } from "../../icons/qwik";
 
 import styles from "./navbar.module.css";
 
-export default component$(() => {
+const Navbar = component$(() => {
   return (
     <header class={styles.header}>
       <div class={["container", styles.wrapper]}>
@@ -16,13 +16,19 @@ export default component$(() => {
         </div>
         <ul>
           <li class="space-x-4">
-            <Link href="/counter/" title="list ssr">
+            <Link href="/login" title="login">
+              Login
+            </Link>
+            <Link href="/dashboard" title="dashboard">
+              Dashboard
+            </Link>
+            <Link href="/counter" title="counter">
               Counter
             </Link>
-            <Link href="/pokemons/list-ssr/" title="list ssr">
+            <Link href="/pokemons/list-ssr" title="list ssr">
               List - SSR
             </Link>
-            <Link href="/pokemons/list-client/" title="list client">
+            <Link href="/pokemons/list-client" title="list client">
               List - CLIENT
             </Link>
           </li>
@@ -31,3 +37,5 @@ export default component$(() => {
     </header>
   );
 });
+
+export default Navbar;
