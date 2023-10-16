@@ -1,82 +1,58 @@
-import {
-  component$,
-  useStore,
-  useStylesScoped$,
-  $,
-  useComputed$,
-} from "@builder.io/qwik";
+import { component$, useStylesScoped$ } from "@builder.io/qwik";
+import { Form, routeAction$, zod$, z } from "@builder.io/qwik-city";
 
 import styles from "./login.css?inline";
 
+export const useLogin = routeAction$(
+  (data, { cookie, redirect }) => {
+    const { email, password } = data;
+    // conditionally return error
+    if (email === "correo@email.com" && password === "123456") {
+      // set cookie
+      cookie.set("jwt", "1234567890", { secure: true, path: "/" });
+      // redirect to home
+      redirect(302, "/");
+      return {
+        success: true,
+        jwtToken: "1234567890",
+      };
+    }
+    return {
+      success: false,
+    };
+  },
+  zod$({
+    email: z.string().email("Formato de correo invalido."),
+    password: z.string().min(6, "Minimo de 6 caracteres").max(20),
+  })
+);
+
 export default component$(() => {
   useStylesScoped$(styles);
-
-  const formState = useStore({
-    email: "",
-    password: "",
-    formPosted: false,
-  });
-
-  const emailError = useComputed$(() => {
-    return formState.email.includes("@") ? "" : "not-valid";
-  });
-
-  const passwordError = useComputed$(() => {
-    return formState.password.length >= 6 ? "" : "not-valid";
-  });
-
-  const isFormValid = useComputed$(() => {
-    if (
-      emailError.value === "not-valid" ||
-      passwordError.value === "not-valid"
-    ) {
-      return false;
-    }
-    return true;
-  });
-
-  const onSubmit = $(() => {
-    formState.formPosted = true;
-    const { email, password } = formState;
-    console.log({ isFormValid: isFormValid.value });
-    console.log({ email, password });
-  });
-
+  const action = useLogin();
   return (
-    <form onSubmit$={onSubmit} class="login-form" preventdefault:submit>
+    <Form class="login-form mt-5" action={action}>
       <div class="relative">
-        <input
-          class={formState.formPosted ? emailError.value : ""}
-          onInput$={(e) =>
-            (formState.email = (e.target as HTMLInputElement).value)
-          }
-          value={formState.email}
-          name="email"
-          type="text"
-          placeholder="Email address"
-        />
+        <input name="email" type="text" placeholder="Email address" />
         <label for="email">Email Address</label>
       </div>
       <div class="relative">
-        <input
-          class={formState.formPosted ? passwordError.value : ""}
-          onInput$={(e) =>
-            (formState.password = (e.target as HTMLInputElement).value)
-          }
-          value={formState.password}
-          name="password"
-          type="password"
-          placeholder="Password"
-        />
+        <input name="password" type="password" placeholder="Password" />
         <label for="password">Password</label>
       </div>
       <div class="relative">
-        <button disabled={!isFormValid.value} type="submit">
-          Ingresar
-        </button>
+        <button type="submit">Ingresar</button>
       </div>
+      <p>
+        {action.value?.success && (
+          <>
+            <span class="text-green-500">Login success</span>
+            <code>Authenticate with token: {action.value.jwtToken}</code>
+          </>
+        )}
+      </p>
 
-      <code>{JSON.stringify(formState, undefined, 2)}</code>
-    </form>
+      <code>{JSON.stringify(action.value, undefined, 2)}</code>
+    </Form>
   );
 });
