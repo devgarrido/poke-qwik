@@ -20,6 +20,7 @@
     "preview": "qwik build preview && vite preview --open",
     "serve": "node server/entry.express",
     "start": "vite --open --mode ssr",
+    "build.all": "yarn run build && yarn run build.server",
     "qwik": "qwik"
   },
   "devDependencies": {
