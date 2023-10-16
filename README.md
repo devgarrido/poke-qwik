@@ -11,3 +11,5 @@
 ## Configuration to ENV's
 
 Renombrar el archivo **.env.template a **.env y cambiar las variables de entorno.
+
+## desarrollado por garrido.pro
